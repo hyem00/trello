@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { JwtModuleOptions, JwtOptionsFactory } from "@nestjs/jwt";
+import * as dotenv from 'dotenv';
 
 @Injectable()
 export class JwtConfigService implements JwtOptionsFactory {
@@ -8,7 +9,7 @@ export class JwtConfigService implements JwtOptionsFactory {
 
   createJwtOptions(): JwtModuleOptions {
     return {
-      secret: this.configService.get<string>("JWT_SECRET"),
+      secret: process.env.DATABASE_PASSWORD, //this.configService.get<string>("JWT_SECRET"),
       signOptions: { expiresIn: "3600s" },
     };
   }

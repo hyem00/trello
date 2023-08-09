@@ -9,10 +9,20 @@ import { MembersModule } from './Members/members.module';
 import { UsersModule } from './Users/users.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthMiddleware } from '../src/auth/auth.middlewares';
+import { JwtModule, JwtService } from "@nestjs/jwt";
+import { JwtConfigService } from "./configs/jwt.config.service";
+import { UsersService } from './Users/users.service';
+import { UsersController } from './Users/users.controller';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRootAsync({ useFactory: () => typeORMConfig }),
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      useClass: JwtConfigService,
+      inject: [ConfigService],
+    }),
     BoardsModule,
     CardsModule,
     CommentsModule,
@@ -20,6 +30,9 @@ import { AuthMiddleware } from '../src/auth/auth.middlewares';
     MembersModule,
     UsersModule,
   ],
+  providers: [UsersService],
+  exports: [UsersService],
+  controllers: [UsersController],
 })
 export class AppModule {}
 console.log(typeORMConfig, '앱에서 확인');

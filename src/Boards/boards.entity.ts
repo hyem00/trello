@@ -1,4 +1,4 @@
-import { BaseEntity, CreateDateColumn, UpdateDateColumn, ManyToOne, Column, Entity, Unique, OneToMany, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity, CreateDateColumn, UpdateDateColumn, JoinColumn, ManyToOne, Column, Entity, Unique, OneToMany, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
 import { Members } from '../Members/members.entity';
 import { Users } from '../Users/users.entity';
 import { Lists } from '../Lists/lists.entity';
@@ -32,9 +32,10 @@ export class Boards extends BaseEntity {
   // @OneToMany(type => Members, board => Members.board, {eager: true})
   // members: Members
 
-  // // Boards-Users : N:1 관계
-  // @ManyToOne(type => Users, users => Users.board, {eager: false})
-  // users: Users
+  // Boards-Users : N:1 관계
+  @ManyToOne(() => Users, (users) => users.boards)
+  @JoinColumn({ name: 'uid' })
+  users: Users
 
   // // Boards-Lists : 1:N 관계
   // @OneToMany(type => Lists, lists => Lists.board, {eager: true})

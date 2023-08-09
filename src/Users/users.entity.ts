@@ -37,9 +37,9 @@ export class Users extends BaseEntity{
     // @OneToMany(() => Members, members => members.users)
     // members: Members[]
 
-    // // Users-Boards : 1:N관계
-    // @OneToMany(() => Boards, boards => boards.users)
-    // boards: Boards[]
+    // Users-Boards : 1:N관계
+    @OneToMany(() => Boards, boards => boards.users)
+    boards: Boards[];
 
     // Users-Comments : 1: N 관계
     @OneToMany(() => Comments, comments => comments.users)

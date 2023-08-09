@@ -63,8 +63,9 @@ export class UsersService{
     const {email, password} = userDto;
     const user = await this.usersRepository.findOne({
       where: {email, deletedAt: null},
+      select: ['email', 'password']
     });
-    console.log("user", user)
+
     // 유효성 검사
     if(user.email !== email){
       throw new UnauthorizedException('이메일이 일치하지 않습니다.')
@@ -77,6 +78,8 @@ export class UsersService{
     if(user && (await bcrypt.compare(password, user.password))){
       const payload = { email: user.email }
       const accessToken = await this.jwtService.signAsync(payload);
+      console.log("accessToken", accessToken)
+      console.log("t", await this.jwtService.signAsync(payload))
       return {accessToken: accessToken}
     } else {
       throw new UnauthorizedException('로그인에 실패하였습니다.')
