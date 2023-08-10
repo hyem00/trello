@@ -78,8 +78,7 @@ export class UsersService{
     if(user && (await bcrypt.compare(password, user.password))){
       const payload = { email: user.email }
       const accessToken = await this.jwtService.signAsync(payload);
-      console.log("accessToken", accessToken)
-      console.log("t", await this.jwtService.signAsync(payload))
+     
       return {accessToken: accessToken}
     } else {
       throw new UnauthorizedException('로그인에 실패하였습니다.')

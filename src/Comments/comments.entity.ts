@@ -23,8 +23,8 @@ export class Comments extends BaseEntity {
   @Column()
   cid: number;
 
-  @Column()
-  uid: number;
+  // @Column()
+  // uid: number;
 
   @Column()
   comment: string;
