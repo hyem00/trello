@@ -12,13 +12,10 @@ export class Lists extends BaseEntity {
     bid: number
 
     @Column()
+    position: number // 리스트 순서
+
+    @Column()
     title: string
-
-    @Column()
-    content: string
-
-    @Column()
-    order: string
 
     @CreateDateColumn()
     createdAt: Date;
