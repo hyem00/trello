@@ -1,4 +1,4 @@
-import { BaseEntity, CreateDateColumn, UpdateDateColumn, JoinColumn, ManyToOne, Column, Entity, Unique, OneToMany, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity, CreateDateColumn, UpdateDateColumn, JoinColumn, ManyToOne, Column, Entity, Unique, OneToMany, PrimaryColumn, PrimaryGeneratedColumn, RelationId } from 'typeorm';
 import { Members } from '../Members/members.entity';
 import { Users } from '../Users/users.entity';
 import { Lists } from '../Lists/lists.entity';
@@ -8,9 +8,6 @@ import { Lists } from '../Lists/lists.entity';
 export class Boards extends BaseEntity {
   @PrimaryGeneratedColumn()
   bid: number;
-
-  @Column()
-  uid: string;
 
   @Column({ type: 'varchar' })
   name: string;
@@ -27,15 +24,15 @@ export class Boards extends BaseEntity {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  // 관계설정 따로 수정해주셔야 합니다.
   // // Boards-Members : 1:N 관계
-  // @OneToMany(type => Members, board => Members.board, {eager: true})
-  // members: Members
+  @OneToMany(() => Members, (members) => members.boards)
+  members: Members;
 
+  // { nullable: true }
   // Boards-Users : N:1 관계
   @ManyToOne(() => Users, (users) => users.boards)
   @JoinColumn({ name: 'uid' })
-  users: Users
+  users: Users;
 
   // // Boards-Lists : 1:N 관계
   // @OneToMany(type => Lists, lists => Lists.board, {eager: true})

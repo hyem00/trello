@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm'
-import { ConfigModule, ConfigService } from "@nestjs/config";
-import { JwtModule } from "@nestjs/jwt";
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { JwtModule } from '@nestjs/jwt';
 import { JwtConfigService } from 'src/configs/jwt.config.service';
 import { UsersController } from './users.controller';
 import { Repository } from 'typeorm';
@@ -15,7 +15,7 @@ import { Users } from './users.entity';
       imports: [ConfigModule],
       useClass: JwtConfigService,
       inject: [ConfigService],
-    })
+    }),
   ],
   controllers: [UsersController],
   providers: [UsersService, Repository],

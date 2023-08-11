@@ -1,33 +1,29 @@
-import { BaseEntity, Column, Entity, Unique, UpdateDateColumn, ManyToOne, OneToMany, PrimaryColumn, PrimaryGeneratedColumn, CreateDateColumn } from "typeorm";
-import { Boards } from '../Boards/boards.entity'
-import { Users } from '../Users/users.entity'
+import { BaseEntity, Column, Entity, Unique, ManyToOne, PrimaryColumn, CreateDateColumn, JoinColumn, UpdateDateColumn, PrimaryGeneratedColumn } from 'typeorm';
+import { Boards } from '../Boards/boards.entity';
+import { Users } from '../Users/users.entity';
 
-@Entity()
-@Unique(['mid']) // memberId 고유값 지정
-export class Members extends BaseEntity{
+@Entity({ name: 'members' })
+@Unique(['uid', 'bid']) // uid와 bid를 복합 유니크 키로 지정
+export class Members {
+  @PrimaryColumn()
+  uid: number;
 
-    @PrimaryGeneratedColumn()
-    mid: number;
+  @PrimaryColumn()
+  bid: number;
 
-    @Column()
-    uid: number;
+  @CreateDateColumn()
+  createdAt: Date;
 
-    @Column()
-    bid: number;
+  @UpdateDateColumn()
+  updatedAt: Date;
 
-    @CreateDateColumn()
-    createdAt: Date;
+  // Boards-Users : N:1 관계
+  @ManyToOne(() => Users, (users) => users.members)
+  @JoinColumn({ name: 'uid' })
+  users: Users;
 
-    @UpdateDateColumn()
-    updatedAt: Date;
-
-    // 관계설정 따로 수정해주셔야 합니다.
-    // // Members-Boards : N:1 관계
-    // @ManyToOne(type => Board, board => board.user, {eager: true})
-    // boards: Board[]
-
-    // // Members-Users : N:1 관계
-    // @ManyToOne(type => Users, board => Users.user, {eager: true})
-    // users: Users
-
+  // Boards-Members : 1:N 관계
+  @ManyToOne(() => Boards, (boards) => boards.members)
+  @JoinColumn({ name: 'bid' })
+  boards: Boards;
 }
