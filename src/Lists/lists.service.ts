@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, UnauthorizedException, BadRequestException } from '@nestjs/common';
+import { Injectable, NotFoundException, UnauthorizedException, BadRequestException, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Lists } from './lists.entity'
@@ -27,13 +27,12 @@ export class ListsService {
 
     const lists =await this.listsRepository.find({where: {bid } })
     if (!lists || lists == undefined) {
-        throw new NotFoundException('리스트 조회에 실패했습니다.')
+      throw new NotFoundException('리스트 조회에 실패했습니다.');
     }
     return lists;
-   }
+  }
 
    // 2. 리스트 생성
-  //  async createList(bid: number, createListsDto: CreateListsDto): Promise<Lists> {
     async createList( bid: number, createListsDto: CreateListsDto) {
  
     const boards = await this.boardRepository.findOne({where: {bid}})

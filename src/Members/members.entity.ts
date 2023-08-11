@@ -1,4 +1,4 @@
-import { BaseEntity, Column, Entity, Unique, ManyToOne, PrimaryColumn, CreateDateColumn, JoinColumn, UpdateDateColumn, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity, RelationId, Column, Entity, Unique, ManyToOne, PrimaryColumn, CreateDateColumn, JoinColumn, UpdateDateColumn, PrimaryGeneratedColumn } from 'typeorm';
 import { Boards } from '../Boards/boards.entity';
 import { Users } from '../Users/users.entity';
 
