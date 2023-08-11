@@ -36,7 +36,7 @@ import { UsersController } from './Users/users.controller';
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(AuthMiddleware).forRoutes({ path: 'api/member', method: RequestMethod.POST },{ path: 'api/list', method: RequestMethod.POST });
+    consumer.apply(AuthMiddleware).forRoutes({ path: 'api/member', method: RequestMethod.POST });
   }
 }
 console.log(typeORMConfig, '앱에서 확인');

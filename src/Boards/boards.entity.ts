@@ -34,7 +34,10 @@ export class Boards extends BaseEntity {
   @JoinColumn({ name: 'uid' })
   users: Users;
 
+  
   // // Boards-Lists : 1:N 관계
-  // @OneToMany(type => Lists, lists => Lists.board, {eager: true})
-  // lists: Lists[]
+
+  @OneToMany(() => Lists, (lists) => lists.boards)
+  lists: Lists;
+
 }
