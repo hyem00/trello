@@ -55,7 +55,7 @@ export class UsersService {
   }
 
   // < 2. 로그인 >
-  async login(userDto: UserDto): Promise<{ accessToken: string }> {
+  async login(userDto: UserDto) {
     const { email, password } = userDto;
     const user = await this.usersRepository.findOne({
       where: { email, deletedAt: null },
@@ -73,8 +73,7 @@ export class UsersService {
       const payload = { email: user.email, uid: user.uid };
       const accessToken = await this.jwtService.signAsync(payload);
       console.log('accessToken', accessToken);
-      console.log('t', await this.jwtService.signAsync(payload));
-      return { accessToken: accessToken };
+      return accessToken;
     } else {
       throw new UnauthorizedException('로그인에 실패하였습니다.');
     }
