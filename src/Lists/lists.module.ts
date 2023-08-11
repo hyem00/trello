@@ -5,6 +5,7 @@ import { Boards } from 'src/Boards/boards.entity';
 import { ListsController } from './lists.controller';
 import { ListsService } from './lists.service';
 import { Repository } from 'typeorm';
+import { Boards } from 'src/Boards/boards.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Lists, Boards])],

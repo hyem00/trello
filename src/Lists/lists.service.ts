@@ -1,108 +1,96 @@
-import { Injectable, NotFoundException, UnauthorizedException, BadRequestException } from '@nestjs/common';
+import { Injectable, NotFoundException, UnauthorizedException, BadRequestException, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Lists } from './lists.entity'
 import { CreateListsDto } from './dto/create-list.dto'
 import { UpdateListsDto } from './dto/update-list.dto'
+import { Boards } from 'src/Boards/boards.entity';
 
 
 @Injectable()
 export class ListsService {
     constructor(
         @InjectRepository(Lists)
-        private listsRepository: Repository<Lists>
+        private listsRepository: Repository<Lists>,
+        @InjectRepository(Boards)
+        private boardRepository: Repository<Boards>
     ){}
 
     
     // 1. 리스트 전체 조회
-   async getLists(bid: number): Promise<Lists[]> {
+   async getLists(bid: number) : Promise<Lists[]>{ 
 
-    if (!bid || bid == undefined) {
-        throw new NotFoundException('board ID가 존재하지 않습니다.')
-    } 
+    const boards = await this.boardRepository.findOne({where: {bid}})
 
-    const lists = await this.listsRepository.find({where: { bid }})
+   if (!boards.bid || boards.bid == undefined) {
+    throw new NotFoundException('board ID가 존재하지 않습니다.');
+  } 
+
+    const lists =await this.listsRepository.find({where: {bid } })
     if (!lists || lists == undefined) {
-        throw new NotFoundException('리스트 조회에 실패했습니다.')
+      throw new NotFoundException('리스트 조회에 실패했습니다.');
     }
     return lists;
-   }
+  }
 
    // 2. 리스트 생성
-   async createList(bid: number, createListsDto: CreateListsDto): Promise<Lists> {
-    const { title } = createListsDto;
-try {
-   if (!bid || bid == undefined) {
-    throw new NotFoundException('board ID가 존재하지 않습니다.');
-  } else if (!title){
+    async createList( bid: number, createListsDto: CreateListsDto) {
+ 
+    const boards = await this.boardRepository.findOne({where: {bid}})
+
+   if (!boards || boards == undefined) {
+    throw new NotFoundException('해당 보드가 존재하지 않습니다.');
+  } else if (!createListsDto){
     throw new BadRequestException('제목을 입력해주세요.')
   }
-    const list = this.listsRepository.create({ bid, title });
-    return this.listsRepository.save(list);
-    } catch (error) {
-      console.log(error);
-      throw new UnauthorizedException('리스트 생성에 실패하였습니다.');
-    }
+
+    const list =await this.listsRepository.save({bid: Number(bid), title: createListsDto.title});
+    return list
+
   }
 
-  // 3. 리스트 수정
-  async updateList(bid: number, lid: number, updateListsDto: UpdateListsDto): Promise<Lists> {
-    const { title } = updateListsDto;
-
+// 3. 리스트 수정
+async updateList(bid: number, lid: number, updateListsDto: UpdateListsDto) {
+  const board = await this.boardRepository.findOne({where: {bid}})
+  const list = await this.listsRepository.findOne({where: {lid}})
+  if (!board || board == undefined) {
+      throw new NotFoundException('해당 보드가 존재하지 않습니다.');
+    } else if (!list || list == undefined) {
+      throw new NotFoundException('해당 리스트가 존재하지 않습니다.');
+    } 
+  if(!updateListsDto){
+      throw new BadRequestException('수정할 제목을 입력해주세요.')
+  }
   try{ 
-    if (!bid || bid == undefined) {
-        throw new NotFoundException('board ID가 존재하지 않습니다.');
-      } else if (!lid || lid == undefined) {
-        throw new NotFoundException('List ID가 존재하지 않습니다.');
-      } 
-    if(!title){
-        throw new BadRequestException('수정할 제목을 입력해주세요.')
-    }
-
-    // 리스트 존재유무
-    const list = this.listsRepository.findOne({where: {lid}})
-      if(!list || list == undefined){
-        throw new NotFoundException('해당 리스트가 조회되지 않습니다.')
-      }
-    (await list).title = title;
-      const update = this.listsRepository.save(await list)
-      return update;
-  }catch(error){
-    console.log(error);
-    throw new UnauthorizedException('리스트 수정에 실패하였습니다.')
+  
+    const update =await this.listsRepository.update({lid},{title : updateListsDto.title})
+    const result = await this.listsRepository.findOne({where : {lid}})
+    return result;
+}catch(error){
+  console.log(error);
+  throw new Error('리스트 수정에 실패하였습니다.')
+}
   }
-    }
 
-    
+  
 // 4. 리스트 삭제
 async deleteList(bid: number, lid: number): Promise<void> {
-    try{
-        if (!bid || bid == undefined) {
-            throw new NotFoundException('board ID가 존재하지 않습니다.');
-          } else if (!lid || lid == undefined) {
-            throw new NotFoundException('List ID가 존재하지 않습니다.');
-          }
+  const board = await this.boardRepository.findOne({where: {bid}})
+  const list = await this.listsRepository.findOne({where: {lid}})
+  if (!board || board == undefined) {
+      throw new NotFoundException('해당 보드가 존재하지 않습니다.');
+    } else if (!list || list == undefined) {
+      throw new NotFoundException('해당 리스트가 존재하지 않습니다.');
+    } 
 
-    // 리스트 존재유무
-    const list = this.listsRepository.findOne({where: {lid}})
-      if(!list || list == undefined){
-        throw new NotFoundException('해당 리스트가 조회되지 않습니다.')
-      }
-
-    const remove = await this.listsRepository.delete(lid);
-    if(remove.affected === 0){
-        throw new NotFoundException(`해당 리스트가 조회되지 않습니다. listId: ${lid}`)
-    }
-    }catch(error){
-        console.log(error);
-        throw new UnauthorizedException('리스트 삭제에 실패했습니다.')
-    }
-    }
-
+  const remove = await this.listsRepository.delete(lid);
+  if(remove.affected === 0){
+      throw new NotFoundException(`해당 리스트가 조회되지 않습니다. listId: ${lid}`)
+  }
+  }
 // 5. 리스트 순서변경
 async changeLists(bid: number, data: {lid: number, position: number, newPosition: number}): Promise<void> {
 
-  try{
       // params 체크
       if (!bid || bid == undefined) {
           throw new NotFoundException('board ID가 존재하지 않습니다.');
@@ -133,10 +121,6 @@ async changeLists(bid: number, data: {lid: number, position: number, newPosition
           })
       await manager.save(listsToUpdate);
   })
-  }catch(error){
-      console.log(error);
-      throw new UnauthorizedException('리스트 순서변경에 실패했습니다.')
-  }};
 
 }
-
+}

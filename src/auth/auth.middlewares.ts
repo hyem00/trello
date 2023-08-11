@@ -19,9 +19,9 @@ export class AuthMiddleware implements NestMiddleware {
       if (authType !== 'Bearer' || !token) {
         throw new UnauthorizedException('It is not Bearer type of token or abnormal token');
       }
-      // token = authHeader.split(' ')[1];
+
       const payload = await this.jwtService.verify(token);
-      res.user = payload;
+      req.user = payload;
 
       next();
     } catch (err) {

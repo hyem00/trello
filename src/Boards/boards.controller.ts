@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Req, Res, ValidationPipe, Response } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Req, Res, ValidationPipe, Response, Request } from '@nestjs/common';
 import { Boards } from './boards.entity';
 import { BoardsService } from './boards.service';
 
@@ -13,9 +13,9 @@ export class BoardsController {
   }
 
   @Post('/board')
-  async createBoard(@Body() data: Boards, @Response() res) {
+  async createBoard(@Body() data: Boards, @Request() req) {
     const { name, color, explanation } = data;
-    const uid = res.user.uid;
+    const uid = req.user.uid;
     console.log(uid);
 
     const createBoard = await this.boardService.createBoard(uid, name, color, explanation);
