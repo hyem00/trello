@@ -36,10 +36,12 @@ export class Comments extends BaseEntity {
   updatedAt: Date;
 
   // // Comments-Cards : N:1 관계
-  // @ManyToOne(type => Cards, cards => cards.comments, {eager: false})
-  // cards: Cards[]
+  @ManyToOne(() => Cards, (cards) => cards.comments) 
+  @JoinColumn({ name: 'cid' })
+  cards: Cards;
 
-  @ManyToOne(() => Users, (users) => users.comments) // user.comments와 연결
+  // Comments-Users : N:1 관계
+  @ManyToOne(() => Users, (users) => users.comments)
   @JoinColumn({ name: 'uid' })
   users: Users;
 }

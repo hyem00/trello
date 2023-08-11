@@ -13,6 +13,7 @@ export class ListsService {
         private listsRepository: Repository<Lists>
     ){}
 
+    
     // 1. 리스트 전체 조회
    async getLists(bid: number): Promise<Lists[]> {
 
@@ -20,7 +21,7 @@ export class ListsService {
         throw new NotFoundException('board ID가 존재하지 않습니다.')
     } 
 
-    const lists = this.listsRepository.find({where: { bid }})
+    const lists = await this.listsRepository.find({where: { bid }})
     if (!lists || lists == undefined) {
         throw new NotFoundException('리스트 조회에 실패했습니다.')
     }
@@ -36,7 +37,7 @@ try {
   } else if (!title){
     throw new BadRequestException('제목을 입력해주세요.')
   }
-    const list = this.listsRepository.create({ title });
+    const list = this.listsRepository.create({ bid, title });
     return this.listsRepository.save(list);
     } catch (error) {
       console.log(error);

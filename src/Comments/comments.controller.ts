@@ -28,8 +28,7 @@ export class CommentsController {
   async createComment(@Param('bid') bid: number, @Param('cid') cid: number, @Body() createCommentDto: CreateCommentDto) {
     const comment = await this.commentsService.createComment(bid, cid, createCommentDto);
     if (comment) {
-      // @HttpCode(HttpStatus.CREATED)
-      return { message: '댓글이 성공적으로 생성되었습니다.' };
+      return { message: '댓글이 성공적으로 생성되었습니다.', data: {comment} };
     }
   }
 
@@ -43,8 +42,7 @@ export class CommentsController {
   ) {
     const update = await this.commentsService.updateComment(bid, cid, commentId, updateCommentDto);
     if (update) {
-      // @HttpCode(HttpStatus.OK)
-      return { message: '댓글이 성공적으로 수정되었습니다.' };
+      return { message: '댓글이 성공적으로 수정되었습니다.', data: {update}};
     }
   }
 
