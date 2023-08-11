@@ -38,7 +38,11 @@ import { AppService } from './app.service';
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(AuthMiddleware).forRoutes({ path: 'api/member', method: RequestMethod.ALL }, { path: 'api/board', method: RequestMethod.POST });
+    consumer.apply(AuthMiddleware).forRoutes(
+      { path: 'api/member', method: RequestMethod.POST }, 
+      { path: 'api/board', method: RequestMethod.POST }
+      
+      );
   }
 }
 console.log(typeORMConfig, '앱에서 확인');
