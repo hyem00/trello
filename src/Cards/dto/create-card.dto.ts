@@ -2,14 +2,17 @@ import { IsNumber, IsString, IsDate } from 'class-validator';
 
 export class CreateCardDto {
   @IsString()
-  readonly title: string;
+  title: string;
 
   @IsString()
-  readonly color: string;
+  color: string;
 
   @IsString()
-  readonly explanation: string;
+  manager: string;
 
   @IsString()
-  readonly deadline: string;
+  explanation: string;
+
+  @IsString()
+  deadline: string;
 }

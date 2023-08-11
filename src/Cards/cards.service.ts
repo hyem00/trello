@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Cards } from './cards.entity';
@@ -18,68 +18,105 @@ export class CardsService {
   ) {}
 
   // 1. 카드 목록 조회
-  async getCard(lid: number) {
-    const listId = await this.listRepository.findOne({ where: { lid } });
-    if (!listId || listId == undefined) {
-      throw new NotFoundException('해당 리스트가 존재하지 않습니다.');
+  async getCard(lid: number): Promise<Cards[]> {
+    const list = await this.listRepository.findOne({ where: { lid } });
+    if (!list.lid || list.lid == undefined) {
+      throw new NotFoundException('List ID가 존재하지 않습니다.');
     }
-
-    const result = await this.cardRepository.find({ where: { lid } });
-    return result;
+    const cards = await this.cardRepository.find({where: {lid}})
+    if(!cards || cards == undefined){
+      throw new NotFoundException('카드 조회에 실패했습니다.');
+    }
+    return cards;
   }
 
-  // 2. 카드 작성
-  createCard(lid: number, data: CreateCardDto) {
 
-    // return this.cardRepository.insert({
-    //   lid: lid,
-    //   title: data.title,
-    //   color: data.color,
-    //   explanation: data.explanation,
-    //   deadline: data.deadline,
-    // });
+  // 2. 카드 작성
+  async createCard(lid: number, createCardDto: CreateCardDto) {
+
+    const list = await this.listRepository.findOne({ where: { lid } });
+    if (!list.lid || list.lid == undefined) {
+      throw new NotFoundException('List ID가 존재하지 않습니다.');
+    } else if (!createCardDto) {
+      throw new BadRequestException('미기입된 항목이 있습니다. 모두 입력해주세요.')
+    }
+
+    const card = await this.cardRepository.create({
+      lid: lid,
+      title: createCardDto.title,
+      color: createCardDto.color,
+      manager: createCardDto.manager,
+      explanation: createCardDto.explanation,
+      deadline: createCardDto.deadline,
+    })
+    return await this.cardRepository.save(card);
+
+    
   }
 
   // 3. 카드 수정
-  async updateCard(cid: number, data: UpdateCardDto) {
+  async updateCard(cid: number, updateCardDto: UpdateCardDto) {
     const IsCid = await this.cardRepository.findOne({ where: { cid } });
     if (!IsCid || IsCid == undefined) {
       throw new NotFoundException('해당 카드가 존재하지 않습니다.');
     }
 
-    return this.cardRepository.update(cid, { title: data.title, color: data.color, explanation: data.explanation, deadline: data.deadline });
+    await this.cardRepository.update( {cid}, {
+      title: updateCardDto.title, 
+      color: updateCardDto.color, 
+      explanation: updateCardDto.explanation,
+      deadline: updateCardDto.deadline 
+      });
+    const update = await this.cardRepository.findOne({where: {cid}})
+    return update;
   }
 
+
   // 4. 카드 삭제
-  async deleteCard(cid: number) {
-    const IsCid = await this.cardRepository.findOne({ where: { cid } });
-    if (!IsCid || IsCid == undefined) {
-      throw new NotFoundException('해당 카드가 존재하지 않습니다.');
+  async deleteCard(lid: number, cid: number) {
+    
+    const list = await this.listRepository.findOne({ where: { lid } });
+    if (!list.lid || list.lid == undefined) {
+      throw new NotFoundException('해당 리스트가 존재하지 않습니다.');
+    } 
+    if(!cid){
+      throw new BadRequestException("삭제할 카드 ID를 입력해주세요.")
     }
-    await this.cardRepository.delete(cid);
+    const remove = await this.cardRepository.delete(cid);
+    if(remove.affected === 0){
+      throw new NotFoundException(`해당 카드가 조회되지 않습니다. cardId: ${cid}`)
+  }
   }
 
   // 5. 작업자 할당/변경
-  async updateManager(cid: number, data: ManagerDto) {
-    const IsCid = await this.cardRepository.findOne({ where: { cid } });
-    if (!IsCid || IsCid == undefined) {
+  async updateManager(cid: number, managerDto: ManagerDto) {
+
+    const { manager, newManager } = managerDto
+    const managerCid = await this.cardRepository.findOne({ where: { cid } });
+    if (!managerCid || managerCid == undefined) {
       throw new NotFoundException('해당 카드가 존재하지 않습니다.');
+    } else if (!manager || !newManager) {
+      throw new BadRequestException("미기입된 항목이 있습니다. 모두 입력해주세요.")
     }
-    const newManager = this.cardRepository.update(cid, { manager: data.manager})
-    return newManager;
+
+    managerCid.manager = newManager
+    const update = this.cardRepository.save(managerCid)
+    return update;
 }
 
     // 6. 마감일 수정
-    async updateDeadline(cid: number, data: DeadlineDto) {
-        const { deadline, NewDeadline } = data;
-        const IsCid = await this.cardRepository.findOne({ where: { cid } });
-    if (!IsCid || IsCid == undefined) {
+    async updateDeadline(cid: number, deadlineDto: DeadlineDto) {
+      const { deadline, NewDeadline } = deadlineDto;
+      const deadlineCid = await this.cardRepository.findOne({ where: { cid } });
+    if (!deadlineCid || deadlineCid == undefined) {
       throw new NotFoundException('해당 카드가 존재하지 않습니다.');
+    } else if (!deadline || !NewDeadline) {
+      throw new BadRequestException("미기입된 항목이 있습니다. 모두 입력해주세요.")
     }
 
-    IsCid.deadline = NewDeadline
-    const updateManager = this.cardRepository.save(IsCid)
-    return updateManager;
+    deadlineCid.deadline = NewDeadline
+    const update = this.cardRepository.save(deadlineCid)
+    return update;
     }
 
 

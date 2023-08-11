@@ -13,42 +13,43 @@ export class CardsController {
   // 1. 카드 목록 조회
   @Get('/board/:bid/list/:lid/card')
   async getCard(@Param('lid') lid: number) {
-    return await this.cardService.getCard(lid);
+    const cards = await this.cardService.getCard(lid);
+    return cards
   }
 
   // 2. 카드 작성
   @Post('/board/:bid/list/:lid/card')
-  createCard(@Param('lid') lid: number, @Body() data: CreateCardDto) {
-    const result = this.cardService.createCard(lid, data);
-    return { message: "카드가 작성되었습니다.", data: result }
+  async createCard(@Param('lid') lid: number, @Body() createCardDto: CreateCardDto) {
+    const card = await this.cardService.createCard(lid, createCardDto);
+    return { message: "카드가 성공적으로 작성되었습니다.", data: { card }}
 
   }
   // 3. 카드 수정
   @Put('/board/:bid/list/:lid/card/:cid')
-  updateCard(@Param('cid') cid: number, @Body() data: UpdateCardDto) {
-    const result = this.cardService.updateCard(cid, data);
-    return { message: "카드가 수정되었습니다.", data: result }
+  async updateCard(@Param('cid') cid: number, @Body() updateCardDto: UpdateCardDto) {
+    const update = await this.cardService.updateCard(cid, updateCardDto);
+    return { message: "카드가 성공적으로 수정되었습니다.", data: { update } }
   }
 
   // 4. 카드 삭제
   @Delete('/board/:bid/list/:lid/card')
-  deleteCard(@Body() cid: number) {
-    const result = this.cardService.deleteCard(cid);
-    return { message: "카드가 삭제되었습니다", data: result };
+  async deleteCard(@Param('lid') lid: number, @Body() cid: number) {
+    await this.cardService.deleteCard(lid, cid);
+    return { message: "카드가 성공적으로 삭제되었습니다" };
   }
 
   // 5. 작업자 할당 / 변경 localhost:3000/api/board/:bid/card/:cid
   @Patch('/board/:bid/list/:lid/card/:cid')
-  updateManager(@Param('cid') cid: number, @Body() data: ManagerDto) {
-    const result = this.cardService.updateManager(cid, data)
-    return { message: "작업자가 변경되었습니다.", Manager: result }
+  async updateManager(@Param('cid') cid: number, @Body() managerDto: ManagerDto) {
+    const update = await this.cardService.updateManager(cid, managerDto)
+    return { message: "작업자가 변경되었습니다.", newManager: {update} }
   }
 
   // 6. 카드 마감일 수정
   @Patch('/board/:bid/list/:lid/card/:cid')
-  updateDeadline(@Param('cid') cid: number, @Body() data: DeadlineDto) {
-    const result = this.cardService.updateDeadline(cid, data);
-    return { message: "카드 마감일이 수정되었습니다.", newDeadline: result}
+  async updateDeadline(@Param('cid') cid: number, @Body() deadlineDto: DeadlineDto) {
+    const update = await this.cardService.updateDeadline(cid, deadlineDto);
+    return { message: "카드 마감일이 수정되었습니다.", newDeadline: {update} }
   }
 
   
