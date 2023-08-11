@@ -30,9 +30,6 @@ export class Cards extends BaseEntity{
     @Column()
     deadline: string;
 
-    @Column()
-    order: string;
-
     @CreateDateColumn()
     createdAt: Date;
 
