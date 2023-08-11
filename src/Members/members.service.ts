@@ -33,6 +33,7 @@ export class MembersService {
       if (!user || user == undefined) {
         throw new NotFoundException('찾을 수 없는 사용자 입니다.');
       }
+      
       return await this.membersRepository.save({
         ...MemberData,
       });

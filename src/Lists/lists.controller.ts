@@ -23,9 +23,9 @@ export class ListsController {
     @Body() createListsDto: CreateListsDto
     ) {
     const list = await this.listsService.createList(bid, createListsDto)
+    
     if (list) {
-        // @HttpCode(HttpStatus.CREATED)
-        return { message: '리스트가 성공적으로 생성 되었습니다.' };
+        return { message: '리스트가 성공적으로 생성 되었습니다.', data :{list} };
     }
   }
 
@@ -38,7 +38,7 @@ export class ListsController {
     ) {
       const update = await this.listsService.updateList(bid, lid, updateListsDto)
         if(update){
-            return {message: '리스트가 성공적으로 수정되었습니다.'}
+            return {message: '리스트가 성공적으로 수정되었습니다.', data: {update}}
         }
     }
 
