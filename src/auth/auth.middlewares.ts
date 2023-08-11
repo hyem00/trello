@@ -7,19 +7,22 @@ export class AuthMiddleware implements NestMiddleware {
   constructor(private jwtService: JwtService) {}
 
   async use(req: any, res: any, next: Function) {
-    const authHeader = req.headers.authorization;
-
+    const authHeader = req.cookies;
     if (!authHeader) {
       throw new UnauthorizedException('JWT not found');
     }
 
     let token: string;
     try {
-      console.log('들어는 왔니');
-      token = authHeader.split(' ')[1];
+      const authkey = authHeader.Authentication;
+      const [authType, token] = authkey.split(' ');
+      if (authType !== 'Bearer' || !token) {
+        throw new UnauthorizedException('It is not Bearer type of token or abnormal token');
+      }
+      // token = authHeader.split(' ')[1];
       const payload = await this.jwtService.verify(token);
       res.user = payload;
-      console.log('@@@@', res.user);
+
       next();
     } catch (err) {
       throw new UnauthorizedException(`Invalid JWT: ${token}`);
