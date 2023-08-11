@@ -13,14 +13,11 @@ export class Boards extends BaseEntity {
   @JoinColumn({ name: 'uid' })
   users: Users;
 
-  @RelationId((board: Boards) => board.users)
-  uid: number;
+  // @RelationId((board: Boards) => board.users)
+  // uid: number;
 
   @Column({ type: 'varchar' })
   name: string;
-
-  @RelationId((boards: Boards) => boards.users)
-  uid: number;
 
   @Column({ type: 'varchar' })
   color: string;

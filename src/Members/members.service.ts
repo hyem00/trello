@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, BadRequestException, UnauthorizedException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException, UnauthorizedException, Param } from '@nestjs/common';
 import { createMemberDto } from './dto/create-member.dto';
 import { Members } from './members.entity';
 import { Users } from 'src/Users/users.entity';
@@ -18,10 +18,13 @@ export class MembersService {
   //멤버 추가
   async createMember(MemberData: createMemberDto, myUid: number): Promise<Members> {
     try {
-      const adminId = await this.boardsRepository.findOne({ where: { uid: myUid } });
-      console.log('@@', adminId);
+      const adminId = await this.boardsRepository.findOne({ where: { users: { uid: myUid } } });
       if (!adminId || adminId == undefined) {
-        throw new UnauthorizedException('권한이 없습니다');
+        throw new UnauthorizedException('권한이 없습니다.');
+      }
+      const id = await this.usersRepository.findOne({ where: { uid: myUid } });
+      if (!id || id == undefined) {
+        throw new NotFoundException('쿠키값에 유저가 존재하지 않습니다.');
       }
 
       const user = await this.usersRepository.findOne({
@@ -38,16 +41,20 @@ export class MembersService {
       throw new BadRequestException('멤버 추가에 실패하였습니다');
     }
   }
-
-  async getAllMembers(bid): Promise<Members[]> {
+  // 보드값에 맞는 멤버 회원들 모두 조회
+  async getAllMembers(bid: number): Promise<Members[]> {
     if (!bid || bid == undefined) {
-      throw new NotFoundException('board ID가 존재하지 않습니다.');
+      throw new NotFoundException('해당보드가 존재하지 않습니다');
     }
     return await this.membersRepository.find({ where: { bid } });
   }
   //                                                    void : 반환 안할때
-  async deleteMember(MemberData: createMemberDto): Promise<void> {
+  async deleteMember(MemberData: createMemberDto, myUid: number): Promise<void> {
     try {
+      const adminId = await this.boardsRepository.findOne({ where: { users: { uid: myUid } } });
+      if (!adminId || adminId == undefined) {
+        throw new UnauthorizedException('권한이 없습니다.');
+      }
       const uid = await this.membersRepository.findOne({
         where: { uid: MemberData.uid },
       });
