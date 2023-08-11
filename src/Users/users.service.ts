@@ -55,13 +55,11 @@ export class UsersService {
   }
 
   // < 2. 로그인 >
-  async login(userDto: UserDto): Promise<{ accessToken: string }> {
+  async login(userDto: UserDto) {
     const { email, password } = userDto;
     const user = await this.usersRepository.findOne({
       where: { email, deletedAt: null },
-      select: ['email', 'password'],
     });
-
     // 유효성 검사
     if (user.email !== email) {
       throw new UnauthorizedException('이메일이 일치하지 않습니다.');
@@ -69,17 +67,13 @@ export class UsersService {
     // else if (!await this.comparePasswords(password, user.password)){
     //   throw new UnauthorizedException('비밀번호가 일치하지 않습니다.')
     // }
-    // const user1 = await Users.findOne({ where: { uid} });
-    // const { user_id } = jwt.verify(authToken, "customized_secret_key");
-
     // user가 존재하고 비밀번호가 일치할 경우 로그인 성공 -> 토큰 생성 (Secret + Payload)
+
     if (user && (await bcrypt.compare(password, user.password))) {
-      // console.log('@@@@~~~~', user.uid);
-      const payload = { email: user.email };
+      const payload = { email: user.email, uid: user.uid };
       const accessToken = await this.jwtService.signAsync(payload);
       console.log('accessToken', accessToken);
-      console.log('t', await this.jwtService.signAsync(payload));
-      return { accessToken: accessToken };
+      return accessToken;
     } else {
       throw new UnauthorizedException('로그인에 실패하였습니다.');
     }

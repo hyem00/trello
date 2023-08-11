@@ -13,6 +13,8 @@ import { JwtModule, JwtService } from '@nestjs/jwt';
 import { JwtConfigService } from './configs/jwt.config.service';
 import { UsersService } from './Users/users.service';
 import { UsersController } from './Users/users.controller';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
 
 @Module({
   imports: [
@@ -30,15 +32,15 @@ import { UsersController } from './Users/users.controller';
     MembersModule,
     UsersModule,
   ],
-  providers: [UsersService, AuthMiddleware],
-  exports: [UsersService],
-  controllers: [UsersController],
+  providers: [AppService, AuthMiddleware],
+  exports: [AppService],
+  controllers: [AppController],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(AuthMiddleware).forRoutes({ path: 'api/member', method: RequestMethod.POST },{ path: 'api/list', method: RequestMethod.POST });
+    consumer.apply(AuthMiddleware).forRoutes({ path: 'api/member', method: RequestMethod.ALL }, { path: 'api/board', method: RequestMethod.POST },{ path: 'api/list', method: RequestMethod.POST });
   }
 }
 console.log(typeORMConfig, '앱에서 확인');
 
-AuthMiddleware;
+// AuthMiddleware;
