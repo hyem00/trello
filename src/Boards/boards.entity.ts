@@ -9,6 +9,13 @@ export class Boards extends BaseEntity {
   @PrimaryGeneratedColumn()
   bid: number;
 
+  @ManyToOne(() => Users, (users) => users.boards)
+  @JoinColumn({ name: 'uid' })
+  users: Users;
+
+  @RelationId((board: Boards) => board.users)
+  uid: number;
+
   @Column({ type: 'varchar' })
   name: string;
 
@@ -33,9 +40,6 @@ export class Boards extends BaseEntity {
 
   // { nullable: true }
   // Boards-Users : N:1 관계
-  @ManyToOne(() => Users, (users) => users.boards)
-  @JoinColumn({ name: 'uid' })
-  users: Users;
 
   // // Boards-Lists : 1:N 관계
   // @OneToMany(type => Lists, lists => Lists.board, {eager: true})
