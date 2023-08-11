@@ -15,7 +15,6 @@ export class ListsService{
 async changeLists(bid: number, data: {lid: number, position: number, newPosition: number}): Promise<void> {
 
 try{
-    // params 체크
     if (!bid || bid == undefined) {
         throw new NotFoundException('board ID가 존재하지 않습니다.');
       } else if (!data || data == undefined) {

@@ -1,6 +1,6 @@
 import { IsString, IsNotEmpty, IsNumber } from "class-validator";
 
-export class ListsDto {
+export class CardsDto {
 
     @IsNotEmpty({ message: '카드ID를 입력해주세요.'})
     @IsNumber()

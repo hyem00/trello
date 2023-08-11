@@ -16,7 +16,7 @@ export class Cards extends BaseEntity{
     mid: number;
 
     @Column()
-    position: number // 리스트 순서
+    position: number; // 리스트 순서
 
     @Column()
     title: string;
