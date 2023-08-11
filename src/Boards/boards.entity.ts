@@ -9,8 +9,10 @@ export class Boards extends BaseEntity {
   @PrimaryGeneratedColumn()
   bid: number;
 
-  @Column()
-  uid: string;
+  // Boards-Users : N:1 관계
+  @ManyToOne(() => Users, (users) => users.boards)
+  @JoinColumn({ name: 'uid' })
+  users: Users;
 
   @Column({ type: 'varchar' })
   name: string;
@@ -31,11 +33,6 @@ export class Boards extends BaseEntity {
   // // Boards-Members : 1:N 관계
   // @OneToMany(type => Members, board => Members.board, {eager: true})
   // members: Members
-
-  // Boards-Users : N:1 관계
-  @ManyToOne(() => Users, (users) => users.boards)
-  @JoinColumn({ name: 'uid' })
-  users: Users
 
   // // Boards-Lists : 1:N 관계
   // @OneToMany(type => Lists, lists => Lists.board, {eager: true})

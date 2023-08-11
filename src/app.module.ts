@@ -1,4 +1,4 @@
-import { Module, MiddlewareConsumer, NestModule  } from '@nestjs/common';
+import { Module, MiddlewareConsumer, NestModule } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { typeORMConfig } from './configs/typeorm.config';
 import { BoardsModule } from './Boards/boards.module';
@@ -9,8 +9,8 @@ import { MembersModule } from './Members/members.module';
 import { UsersModule } from './Users/users.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthMiddleware } from '../src/auth/auth.middlewares';
-import { JwtModule, JwtService } from "@nestjs/jwt";
-import { JwtConfigService } from "./configs/jwt.config.service";
+import { JwtModule, JwtService } from '@nestjs/jwt';
+import { JwtConfigService } from './configs/jwt.config.service';
 import { UsersService } from './Users/users.service';
 import { UsersController } from './Users/users.controller';
 
@@ -35,4 +35,3 @@ import { UsersController } from './Users/users.controller';
   controllers: [UsersController],
 })
 export class AppModule {}
-console.log(typeORMConfig, '앱에서 확인');
