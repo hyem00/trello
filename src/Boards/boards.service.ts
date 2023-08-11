@@ -27,17 +27,15 @@ export class BoardsService {
   }
 
   //보드 생성
-  async createBoard(name: string, color: string, explanation: string) {
+  async createBoard(uid: number, name: string, color: string, explanation: string) {
     try {
-      // const user = await this.userRepository.findOne({ where: { uid } });
-      // if (!user) {
-      //   throw new NotFoundException('로그인을 해주세요!');
-      // }
       if (!name || !color || !explanation) {
         throw new NotFoundException('모든 필드를 입력해주세요');
       }
-      const newBoard = this.boardRepository.create({ name, color, explanation });
-      return await this.boardRepository.save(newBoard);
+      const user = await this.userRepository.findOne({ where: { uid } });
+      const newBoard = this.boardRepository.create({ users: user, name, color, explanation });
+      const saveBoard = await this.boardRepository.save(newBoard);
+      return saveBoard;
     } catch (error) {
       console.log(error);
       throw error;
@@ -72,17 +70,8 @@ export class BoardsService {
     }
   }
   // 보드가 존재하는지 확인하는 함수 작성
-  private async checkBoard(bid: number) {
-    try {
-      const board = await this.boardRepository.findOne({
-        where: { bid },
-      });
-      if (!board) {
-        throw new NotFoundException(`${bid}번 보드는 존재하지 않는 보드 입니다.`);
-      }
-    } catch (error) {
-      console.log(error);
-      throw error;
-    }
+  async checkBoard(bid: number): Promise<boolean> {
+    const board = await this.boardRepository.findOne({ where: { bid } });
+    return !!board; // board가 존재하면 true, 존재하지 않으면 false를 반환
   }
 }

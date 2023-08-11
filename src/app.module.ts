@@ -1,4 +1,4 @@
-import { Module, MiddlewareConsumer, NestModule } from '@nestjs/common';
+import { Module, MiddlewareConsumer, NestModule, RequestMethod } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { typeORMConfig } from './configs/typeorm.config';
 import { BoardsModule } from './Boards/boards.module';
@@ -8,11 +8,13 @@ import { ListsModule } from './Lists/lists.module';
 import { MembersModule } from './Members/members.module';
 import { UsersModule } from './Users/users.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { AuthMiddleware } from '../src/auth/auth.middlewares';
+import { AuthMiddleware } from './auth/auth.middlewares';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import { JwtConfigService } from './configs/jwt.config.service';
 import { UsersService } from './Users/users.service';
 import { UsersController } from './Users/users.controller';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
 
 @Module({
   imports: [
@@ -30,8 +32,15 @@ import { UsersController } from './Users/users.controller';
     MembersModule,
     UsersModule,
   ],
-  providers: [UsersService],
-  exports: [UsersService],
-  controllers: [UsersController],
+  providers: [AppService, AuthMiddleware],
+  exports: [AppService],
+  controllers: [AppController],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(AuthMiddleware).forRoutes({ path: 'api/member', method: RequestMethod.POST });
+  }
+}
+console.log(typeORMConfig, '앱에서 확인');
+
+// AuthMiddleware;

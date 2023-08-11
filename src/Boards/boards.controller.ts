@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Req, Res, ValidationPipe, Response } from '@nestjs/common';
 import { Boards } from './boards.entity';
 import { BoardsService } from './boards.service';
 
@@ -13,12 +13,14 @@ export class BoardsController {
   }
 
   @Post('/board')
-  async createBoard(@Body() data: Boards) {
+  async createBoard(@Body() data: Boards, @Response() res) {
     const { name, color, explanation } = data;
+    const uid = res.user.uid;
+    console.log(uid);
 
-    const createBoard = await this.boardService.createBoard(name, color, explanation);
+    const createBoard = await this.boardService.createBoard(uid, name, color, explanation);
     console.log(createBoard);
-    return { message: '보드가 생성되었습니다.', Board: createBoard };
+    return createBoard;
   }
 
   @Patch('/board/:bid')
