@@ -12,6 +12,9 @@ export class Boards extends BaseEntity {
   @Column({ type: 'varchar' })
   name: string;
 
+  @RelationId((boards: Boards) => boards.users)
+  uid: number;
+
   @Column({ type: 'varchar' })
   color: string;
 

@@ -9,9 +9,8 @@ export class MembersController {
 
   @Post('/member')
   async createMember(@Body() MemberData: createMemberDto, @Response() res): Promise<Members> {
-    const MyUid = res.user;
-    console.log('@@@@@@@@@@@@', MyUid);
-    return await this.MembersService.createMember(MemberData, MyUid);
+    const myUid = res.user.uid;
+    return await this.MembersService.createMember(MemberData, myUid);
   }
   //그 보드의 전체 멤버
   @Get('/member')
