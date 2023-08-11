@@ -1,16 +1,13 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm'
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Lists } from './lists.entity';
 import { ListsController } from './lists.controller';
 import { ListsService } from './lists.service';
-import { ListsRepository } from './lists.repository';
-// import { MemberModule } from '../Members/members.module';
+import { Repository } from 'typeorm';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([ListsRepository]),
-    // MemberModule // 인증유저만 게시글 보고 쓸수있음
-  ],
+  imports: [TypeOrmModule.forFeature([Lists])],
   controllers: [ListsController],
-  providers: [ListsService]
+  providers: [ListsService, Repository],
 })
 export class ListsModule {}

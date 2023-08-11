@@ -8,7 +8,7 @@ import { ListsModule } from './Lists/lists.module';
 import { MembersModule } from './Members/members.module';
 import { UsersModule } from './Users/users.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { AuthMiddleware } from './auth/auth.middlewares';
+import { AuthMiddleware } from './auth/auth.middlewares'
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import { JwtConfigService } from './configs/jwt.config.service';
 import { UsersService } from './Users/users.service';
