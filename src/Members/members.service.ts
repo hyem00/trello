@@ -10,21 +10,19 @@ import { throws } from 'assert';
 @Injectable()
 export class MembersService {
   constructor(
-    @InjectRepository(Members)
-    private readonly membersRepository: Repository<Members>,
-    private readonly usersRepository: Repository<Users>,
-    private readonly BoardsRepository: Repository<Boards>,
+    @InjectRepository(Members) private readonly membersRepository: Repository<Members>,
+    @InjectRepository(Users) private readonly usersRepository: Repository<Users>,
+    @InjectRepository(Boards) private readonly boardsRepository: Repository<Boards>,
   ) {}
 
   //멤버 추가
-  async createMember(MemberData: createMemberDto, MyUid: number): Promise<Members> {
+  async createMember(MemberData: createMemberDto, myUid: number): Promise<Members> {
     try {
-      // const adminId = await this.BoardsRepository.findOne({ where: { uid: MyUid } });
-      // if (!adminId || adminId == undefined) {
-      //   throw new UnauthorizedException('권한이 없습니다');
-      // }
-
-      // 토큰에 있는 이메일 가져와서 그걸로 조인해서 유저 아이디 찾아오기
+      const adminId = await this.boardsRepository.findOne({ where: { uid: myUid } });
+      console.log('@@', adminId);
+      if (!adminId || adminId == undefined) {
+        throw new UnauthorizedException('권한이 없습니다');
+      }
 
       const user = await this.usersRepository.findOne({
         where: { uid: MemberData.uid },
