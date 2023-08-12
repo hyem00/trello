@@ -32,8 +32,8 @@ export class Users extends BaseEntity {
   @DeleteDateColumn()
   deletedAt: Date | null;
 
-  // // Relationship
-  // // Users-Members : 1:N 관계
+  
+  // Users-Members : 1:N 관계
   @OneToMany(() => Members, (members) => members.users)
   members: Members[];
 
@@ -45,7 +45,7 @@ export class Users extends BaseEntity {
   @OneToMany(() => Comments, (comments) => comments.users)
   comments: Comments[];
 
-   // Users-Cards : 1: N 관계
-   @OneToMany(() => Cards, (cards) => cards.users)
-   cards: Cards[];
+  // Users-Cards : 1: N 관계
+  @OneToMany(() => Cards, (cards) => cards.users)
+  cards: Cards[];
 }

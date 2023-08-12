@@ -36,16 +36,16 @@ export class Cards extends BaseEntity {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  // // Cards-Lists : N:1 관계
-//   @ManyToOne(() => Lists, (lists) => lists.cards)
-//   @JoinColumn({ name: 'lid' })
-//   lists: Lists[];
+  // Cards-Lists : N:1 관계
+  @ManyToOne(() => Lists, (lists) => lists.cards)
+  @JoinColumn({ name: 'lid' })
+  lists: Lists[];
 
-  // // Cards-Comments : 1:N 관계
+  // Cards-Comments : 1:N 관계
   @OneToMany(() => Comments, (comments) => comments.cards)
   comments: Comments[];
 
-  // Card - User : N:1
+  // Card - User : N:1 관계
   @ManyToOne(() => Users, (users) => users.cards)
   @JoinColumn({ name: 'uid' })
   users: Users[];

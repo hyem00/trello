@@ -35,7 +35,7 @@ export class Comments extends BaseEntity {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  // // Comments-Cards : N:1 관계
+  // Comments-Cards : N:1 관계
   @ManyToOne(() => Cards, (cards) => cards.comments) 
   @JoinColumn({ name: 'cid' })
   cards: Cards;

@@ -2,15 +2,12 @@ import { IsNumber, IsString, IsOptional, IsDate } from 'class-validator';
 
 export class UpdateCardDto {
   @IsString()
-  readonly title: string;
+  title: string;
 
   @IsString()
-  readonly color: string;
+  color: string;
 
   @IsNumber()
-  readonly explanation: string;
+  explanation: string;
 
-  @IsOptional() // null 허용
-  @IsDate()
-  readonly deadline: Date;
 }

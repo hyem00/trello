@@ -65,7 +65,6 @@ export class CardsService {
       title: updateCardDto.title, 
       color: updateCardDto.color, 
       explanation: updateCardDto.explanation,
-      deadline: updateCardDto.deadline 
       });
     const update = await this.cardRepository.findOne({where: {cid}})
     return update;
