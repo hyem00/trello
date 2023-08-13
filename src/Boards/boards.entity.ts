@@ -9,6 +9,7 @@ export class Boards extends BaseEntity {
   @PrimaryGeneratedColumn()
   bid: number;
 
+  // Boards-Users : N:1 관계
   @ManyToOne(() => Users, (users) => users.boards)
   @JoinColumn({ name: 'uid' })
   users: Users;
@@ -31,16 +32,11 @@ export class Boards extends BaseEntity {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  // // Boards-Members : 1:N 관계
+  // Boards-Members : 1:N 관계
   @OneToMany(() => Members, (members) => members.boards)
   members: Members;
-
-  // { nullable: true }
-  // Boards-Users : N:1 관계
-
   
-  // // Boards-Lists : 1:N 관계
-
+  // Boards-Lists : 1:N 관계
   @OneToMany(() => Lists, (lists) => lists.boards)
   lists: Lists;
 

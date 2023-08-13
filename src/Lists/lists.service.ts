@@ -18,8 +18,7 @@ export class ListsService {
   // 1. 리스트 전체 조회
   async getLists(bid: number): Promise<Lists[]> {
     const boards = await this.boardRepository.findOne({ where: { bid } });
-
-    if (!boards.bid || boards.bid == undefined) {
+    if (!boards || boards == undefined) {
       throw new NotFoundException('board ID가 존재하지 않습니다.');
     }
 

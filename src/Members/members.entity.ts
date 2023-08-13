@@ -22,8 +22,10 @@ export class Members {
   @JoinColumn({ name: 'uid' })
   users: Users;
 
-  // Boards-Members : 1:N 관계
+  // Boards-Members : N:1 관계
   @ManyToOne(() => Boards, (boards) => boards.members)
   @JoinColumn({ name: 'bid' })
   boards: Boards;
+
+
 }

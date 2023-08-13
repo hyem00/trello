@@ -23,8 +23,8 @@ export class Comments extends BaseEntity {
   @Column()
   cid: number;
 
-  @Column()
-  uid: number;
+  // @Column()
+  // uid: number;
 
   @Column()
   comment: string;
@@ -35,11 +35,13 @@ export class Comments extends BaseEntity {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  // // Comments-Cards : N:1 관계
-  // @ManyToOne(type => Cards, cards => cards.comments, {eager: false})
-  // cards: Cards[]
+  // Comments-Cards : N:1 관계
+  @ManyToOne(() => Cards, (cards) => cards.comments) 
+  @JoinColumn({ name: 'cid' })
+  cards: Cards;
 
-  @ManyToOne(() => Users, (users) => users.comments) // user.comments와 연결
+  // Comments-Users : N:1 관계
+  @ManyToOne(() => Users, (users) => users.comments)
   @JoinColumn({ name: 'uid' })
   users: Users;
 }

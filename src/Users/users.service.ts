@@ -19,7 +19,7 @@ export class UsersService {
 
   // < 1. 회원가입 >
   async signup(signupData: AuthCredentialsDto): Promise<Users> {
-    try {
+   
       const { email, nickname, password, confirmPassword } = signupData;
       const existUser = await this.getUserByEmail(email);
 
@@ -39,10 +39,6 @@ export class UsersService {
       const hashedPassword = await bcrypt.hash(password, 10);
       const user = this.usersRepository.create({ email, nickname, password: hashedPassword });
       return this.usersRepository.save(user);
-    } catch (error) {
-      console.log(error);
-      throw new UnauthorizedException('회원가입에 실패하였습니다.');
-    }
   }
 
   // 이메일 중복검사
@@ -90,7 +86,7 @@ export class UsersService {
 
   // < 4. 회원정보 수정 >
   async updateUser(uid: number, updateDto: UpdateDto): Promise<Users> {
-    try {
+   
       const { password, newPassword, newNickname } = updateDto;
       const user = await this.usersRepository.findOne({ where: { uid, deletedAt: null } });
 
@@ -120,9 +116,5 @@ export class UsersService {
 
       // const updateUser = this.usersRepository.update({uid}, {password: newPassword, nickname: newNickname})
       // return this.usersRepository.save(updateUser);
-    } catch (error) {
-      console.log(error);
-      throw new UnauthorizedException('회원정보 수정에 실패하였습니다.');
-    }
   }
 }

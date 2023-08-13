@@ -11,25 +11,32 @@ export class CommentsController {
 
   // 1. 댓글목록 전체 조회 : GET localhost:3000/api/board/:bid/card/:cid/comment
   @Get('/board/:bid/card/:cid/comment')
-  async getComments(@Param('bid') bid: number, @Param('cid') cid: number) {
+  async getComments(
+    @Param('bid') bid: number, 
+    @Param('cid') cid: number) {
     const comments = await this.commentsService.getAllComments(bid, cid);
     return comments;
   }
 
   // 2. 댓글 1개 조회: GET localhost:3000/api/board/:bid/card/:cid/comment/:commentId
   @Get('/board/:bid/card/:cid/comment/:commentId')
-  async GetCommentById(@Param('bid') bid: number, @Param('cid') cid: number, @Param('commentId') commentId: number) {
+  async GetCommentById(
+    @Param('bid') bid: number, 
+    @Param('cid') cid: number, 
+    @Param('commentId') commentId: number) {
     const comment = await this.commentsService.GetCommentById(bid, cid, commentId);
     return comment;
   }
 
   // 3. 댓글 생성 POST : localhost:3000/api/board/:bid/card/:cid/comment
   @Post('/board/:bid/card/:cid/comment')
-  async createComment(@Param('bid') bid: number, @Param('cid') cid: number, @Body() createCommentDto: CreateCommentDto) {
+  async createComment(
+    @Param('bid') bid: number, 
+    @Param('cid') cid: number, 
+    @Body() createCommentDto: CreateCommentDto) {
     const comment = await this.commentsService.createComment(bid, cid, createCommentDto);
     if (comment) {
-      // @HttpCode(HttpStatus.CREATED)
-      return { message: '댓글이 성공적으로 생성되었습니다.' };
+      return { message: '댓글이 성공적으로 생성되었습니다.', comment: {comment} };
     }
   }
 
@@ -43,15 +50,17 @@ export class CommentsController {
   ) {
     const update = await this.commentsService.updateComment(bid, cid, commentId, updateCommentDto);
     if (update) {
-      // @HttpCode(HttpStatus.OK)
-      return { message: '댓글이 성공적으로 수정되었습니다.' };
+      return { message: '댓글이 성공적으로 수정되었습니다.', comment: {update}};
     }
   }
 
   // 5. 댓글 삭제 DELETE : localhost:3000/api/board/:bid/card/:cid/comment/:commentId
   @Delete('/board/:bid/card/:cid/comment/:commentId')
-  async deleteComment(@Param('bid') bid: number, @Param('cid') cid: number, @Param('commentId') commentId: number) {
+  async deleteComment(
+    @Param('bid') bid: number, 
+    @Param('cid') cid: number, 
+    @Param('commentId') commentId: number) {
     await this.commentsService.deleteComment(bid, cid, commentId);
-    return { message: '댓글이 정상적으로 삭제되었습니다.' };
+    return { message: '댓글이 정상적으로 삭제되었습니다.'};
   }
 }

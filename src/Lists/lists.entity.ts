@@ -36,22 +36,14 @@ export class Lists extends BaseEntity {
     // }
     // }
 
-  // 리스트 : 보드 =N:1 관계
+  // Lists : Boards = N:1 관계
   @ManyToOne(() => Boards, (boards) => boards.lists)
   @JoinColumn({ name: 'bid'})
   boards: Boards;
 
-//   // 리스트 - 카드 1:N 관계
-//   OneToMany(() => Lists, (lists) => lists.cards)
-//   members: Members;
-// }
-
-    // 관계설정 따로 수정해주셔야 합니다.
-    // // Lists-Boards : N:1 관계
-    // @ManyToOne(type => Boards, boards.list,{eager:false})
-    // boards: Boards;
-
-    // // Lists-Cards : 1:N 관계
-    // @OneToMany(type => Cards, cards.boards,{eager:false})
-    // cards: Cards;
+  // Lists : Cards = 1:N 관계
+  @OneToMany(() => Cards, (cards) => cards.lists)
+  cards: Cards;
 }
+
+
