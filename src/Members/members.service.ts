@@ -17,30 +17,25 @@ export class MembersService {
 
   //멤버 추가
   async createMember(MemberData: createMemberDto, myUid: number): Promise<Members> {
-    try {
-      const adminId = await this.boardsRepository.findOne({ where: { users: { uid: myUid } } });
-      if (!adminId || adminId == undefined) {
-        throw new UnauthorizedException('권한이 없습니다.');
-      }
-      const id = await this.usersRepository.findOne({ where: { uid: myUid } });
-      if (!id || id == undefined) {
-        throw new NotFoundException('쿠키값에 유저가 존재하지 않습니다.');
-      }
-
-      const user = await this.usersRepository.findOne({
-        where: { uid: MemberData.uid },
-      });
-      if (!user || user == undefined) {
-        throw new NotFoundException('찾을 수 없는 사용자 입니다.');
-      }
-      
-      return await this.membersRepository.save({
-        ...MemberData,
-      });
-    } catch (error) {
-      console.log(error);
-      throw new BadRequestException('멤버 추가에 실패하였습니다');
+    const adminId = await this.boardsRepository.findOne({ where: { users: { uid: myUid } } });
+    if (!adminId || adminId == undefined) {
+      throw new UnauthorizedException('권한이 없습니다.');
     }
+    const id = await this.usersRepository.findOne({ where: { uid: myUid } });
+    if (!id || id == undefined) {
+      throw new NotFoundException('쿠키값에 유저가 존재하지 않습니다.');
+    }
+
+    const user = await this.usersRepository.findOne({
+      where: { uid: MemberData.uid },
+    });
+    if (!user || user == undefined) {
+      throw new NotFoundException('찾을 수 없는 사용자 입니다.');
+    }
+
+    return await this.membersRepository.save({
+      ...MemberData,
+    });
   }
   // 보드값에 맞는 멤버 회원들 모두 조회
   async getAllMembers(bid: number): Promise<Members[]> {
@@ -51,28 +46,23 @@ export class MembersService {
   }
   //                                                    void : 반환 안할때
   async deleteMember(MemberData: createMemberDto, myUid: number): Promise<void> {
-    try {
-      const adminId = await this.boardsRepository.findOne({ where: { users: { uid: myUid } } });
-      if (!adminId || adminId == undefined) {
-        throw new UnauthorizedException('권한이 없습니다.');
-      }
-      const uid = await this.membersRepository.findOne({
-        where: { uid: MemberData.uid },
-      });
-      if (!uid || uid == undefined) {
-        throw new NotFoundException('존재하지 않는 멤버입니다');
-      }
-
-      const bid = await this.membersRepository.findOne({
-        where: { bid: MemberData.bid },
-      });
-      if (!bid || bid == undefined) {
-        throw new NotFoundException('존재하지 않는 보드입니다');
-      }
-      await this.membersRepository.delete(MemberData);
-    } catch (error) {
-      console.log(error);
-      throw new BadRequestException('멤버 삭제에 실패하였습니다');
+    const adminId = await this.boardsRepository.findOne({ where: { users: { uid: myUid } } });
+    if (!adminId || adminId == undefined) {
+      throw new UnauthorizedException('권한이 없습니다.');
     }
+    const uid = await this.membersRepository.findOne({
+      where: { uid: MemberData.uid },
+    });
+    if (!uid || uid == undefined) {
+      throw new NotFoundException('존재하지 않는 멤버입니다');
+    }
+
+    const bid = await this.membersRepository.findOne({
+      where: { bid: MemberData.bid },
+    });
+    if (!bid || bid == undefined) {
+      throw new NotFoundException('존재하지 않는 보드입니다');
+    }
+    await this.membersRepository.delete(MemberData);
   }
 }
