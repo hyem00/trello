@@ -5,7 +5,6 @@ import { Users } from 'src/Users/users.entity';
 import { Boards } from 'src/Boards/boards.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { throws } from 'assert';
 
 @Injectable()
 export class MembersService {
@@ -40,13 +39,13 @@ export class MembersService {
   // 보드값에 맞는 멤버 회원들 모두 조회
   async getAllMembers(bid: number): Promise<Members[]> {
     if (!bid || bid == undefined) {
-      throw new NotFoundException('해당보드가 존재하지 않습니다');
+      throw new NotFoundException('해당 보드가 존재하지 않습니다');
     }
     return await this.membersRepository.find({ where: { bid } });
   }
-  
+
   // 멤버 삭제                                                   void : 반환 안할때
-  async deleteMember(MemberData: createMemberDto, myUid: number): Promise<void> {
+  async deleteMember(MemberData: createMemberDto, myUid: number) {
     const adminId = await this.boardsRepository.findOne({ where: { users: { uid: myUid } } });
     if (!adminId || adminId == undefined) {
       throw new UnauthorizedException('권한이 없습니다.');
@@ -55,15 +54,15 @@ export class MembersService {
       where: { uid: MemberData.uid },
     });
     if (!uid || uid == undefined) {
-      throw new NotFoundException('존재하지 않는 멤버입니다');
+      throw new NotFoundException('존재하지 않는 멤버입니다.');
     }
 
     const bid = await this.membersRepository.findOne({
       where: { bid: MemberData.bid },
     });
     if (!bid || bid == undefined) {
-      throw new NotFoundException('존재하지 않는 보드입니다');
+      throw new NotFoundException('존재하지 않는 보드입니다.');
     }
-    await this.membersRepository.delete(MemberData);
+    return await this.membersRepository.delete(MemberData);
   }
 }
