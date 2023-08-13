@@ -30,8 +30,8 @@ export class BoardsController {
   }
 
   @Delete('board/:bid')
-  deleteBoard(@Param('bid') bid: number) {
-    this.boardService.deleteBoard(bid);
-    return { message: '보드가 삭제되었습니다.' };
+  async deleteBoard(@Param('bid') bid: number) {
+    const remove = await this.boardService.deleteBoard(bid);
+    return remove;
   }
 }
