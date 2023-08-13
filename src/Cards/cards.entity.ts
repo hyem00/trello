@@ -1,4 +1,4 @@
-import { ManyToOne, JoinColumn, BaseEntity, UpdateDateColumn, CreateDateColumn, Column, Entity, Unique, OneToMany, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
+import { ManyToOne, Generated, BeforeInsert, JoinColumn, BaseEntity, UpdateDateColumn, CreateDateColumn, Column, Entity, Unique, OneToMany, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
 import { Comments } from '../Comments/comments.entity';
 import { Lists } from '../Lists/lists.entity';
 import { Users } from 'src/Users/users.entity';
@@ -19,14 +19,14 @@ export class Cards extends BaseEntity {
   @Column()
   color: string;
 
+  @Column({ default: 1 })
+  order: number;
+
   @Column()
   explanation: string;
 
   @Column()
-  deadline: Date;
-
-  @Column()
-  position: number;
+  deadline: string;
 
   @Column()
   manager: string;
