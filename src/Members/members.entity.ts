@@ -27,5 +27,4 @@ export class Members {
   @JoinColumn({ name: 'bid' })
   boards: Boards;
 
-
 }
