@@ -11,7 +11,6 @@ import { Users } from 'src/Users/users.entity';
 @Module({
   imports: [
     TypeOrmModule.forFeature([Boards, Users]),
-    // MemberModule // 인증유저만 게시글 보고 쓸수있음
   ],
   controllers: [BoardsController],
   providers: [BoardsService, Repository],

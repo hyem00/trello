@@ -49,7 +49,8 @@ export class MembersService {
     }
     return await this.membersRepository.find({ where: { bid } });
   }
-  //                                                    void : 반환 안할때
+  
+  // 멤버 삭제                                                   void : 반환 안할때
   async deleteMember(MemberData: createMemberDto, myUid: number): Promise<void> {
     try {
       const adminId = await this.boardsRepository.findOne({ where: { users: { uid: myUid } } });

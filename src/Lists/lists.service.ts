@@ -16,6 +16,7 @@ export class ListsService {
         private boardRepository: Repository<Boards>
     ){}
 
+    
     // 1. 리스트 전체 조회
    async getLists(bid: number) : Promise<Lists[]>{ 
 
@@ -87,6 +88,7 @@ async deleteList(bid: number, lid: number): Promise<void> {
       throw new NotFoundException(`해당 리스트가 조회되지 않습니다. listId: ${lid}`)
   }
   }
+  
 // 5. 리스트 순서변경
 async changeLists(bid: number, data: {lid: number, position: number, newPosition: number}): Promise<void> {
 

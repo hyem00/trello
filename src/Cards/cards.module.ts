@@ -2,15 +2,15 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { CardsController } from './cards.controller';
 import { CardsService } from './cards.service';
-import { CardsRepository } from './cards.repository';
-// import { MemberModule } from '../Members/members.module';
+import { Cards } from './cards.entity';
+import { Lists } from 'src/Lists/lists.entity';
+import { Boards } from 'src/Boards/boards.entity';
+import { Comments } from 'src/Comments/comments.entity';
+import { Repository } from 'typeorm';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([CardsRepository]),
-    // MemberModule // 인증유저만 게시글 보고 쓸수있음
-  ],
+  imports: [TypeOrmModule.forFeature([Comments, Cards, Lists, Boards])],
   controllers: [CardsController],
-  providers: [CardsService]
+  providers: [CardsService, Repository],
 })
 export class CardsModule {}

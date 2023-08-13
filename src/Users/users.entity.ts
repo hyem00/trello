@@ -2,6 +2,7 @@ import { BaseEntity, Column, Entity, Unique, Index, DeleteDateColumn, CreateDate
 import { Members } from '../Members/members.entity';
 import { Boards } from '../Boards/boards.entity';
 import { Comments } from 'src/Comments/comments.entity';
+import { Cards } from 'src/Cards/cards.entity'
 
 @Entity()
 @Unique(['nickname']) // userId 고유값 지정
@@ -31,8 +32,8 @@ export class Users extends BaseEntity {
   @DeleteDateColumn()
   deletedAt: Date | null;
 
-  // // Relationship
-  // // Users-Members : 1:N 관계
+  
+  // Users-Members : 1:N 관계
   @OneToMany(() => Members, (members) => members.users)
   members: Members[];
 
@@ -43,4 +44,8 @@ export class Users extends BaseEntity {
   // Users-Comments : 1: N 관계
   @OneToMany(() => Comments, (comments) => comments.users)
   comments: Comments[];
+
+  // Users-Cards : 1: N 관계
+  @OneToMany(() => Cards, (cards) => cards.users)
+  cards: Cards[];
 }

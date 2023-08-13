@@ -48,7 +48,7 @@ export class BoardsService {
       if (!bid || bid == undefined) {
         throw new NotFoundException('존재하지 않는 보드입니다.');
       }
-      await this.boardRepository.update(bid, { name, color, explanation });
+      await this.boardRepository.update({bid}, { name, color, explanation });
       return await this.boardRepository.findOne({ where: { bid } });
     } catch (error) {
       console.log(error);

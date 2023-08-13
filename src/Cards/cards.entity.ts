@@ -1,47 +1,52 @@
-import { ManyToOne, BaseEntity, UpdateDateColumn, CreateDateColumn, Column, Entity, Unique, OneToMany, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
-import { Comments } from '../Comments/comments.entity'
-import { Lists } from '../Lists/lists.entity'
+import { ManyToOne, JoinColumn, BaseEntity, UpdateDateColumn, CreateDateColumn, Column, Entity, Unique, OneToMany, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
+import { Comments } from '../Comments/comments.entity';
+import { Lists } from '../Lists/lists.entity';
+import { Users } from 'src/Users/users.entity';
 
 @Entity()
 @Unique(['cid']) // cardId 고유값 지정
-export class Cards extends BaseEntity{
+export class Cards extends BaseEntity {
+  @PrimaryGeneratedColumn()
+  cid: number;
 
-    @PrimaryGeneratedColumn()
-    cid: number;
+  @Column()
+  lid: number;
 
-    @Column()
-    lid: number;
+  @Column()
+  title: string;
 
-    @Column()
-    mid: number;
+  @Column()
+  color: string;
 
-    @Column()
-    title: string;
+  @Column()
+  explanation: string;
 
-    @Column()
-    color: string;
+  @Column()
+  deadline: Date;
 
-    @Column()
-    explanation: string;
+  @Column()
+  position: number;
 
-    @Column()
-    deadline: string;
+  @Column()
+  manager: string;
 
-    @Column()
-    order: string;
+  @CreateDateColumn()
+  createdAt: Date;
 
-    @CreateDateColumn()
-    createdAt: Date;
+  @UpdateDateColumn()
+  updatedAt: Date;
 
-    @UpdateDateColumn()
-    updatedAt: Date;
+  // Cards-Lists : N:1 관계
+  @ManyToOne(() => Lists, (lists) => lists.cards)
+  @JoinColumn({ name: 'lid' })
+  lists: Lists[];
 
-    // 관계설정 따로 수정해주셔야 합니다.
-    // // Cards-Lists : N:1 관계
-    // @ManyToOne(type => Lists, list => list.lid, {eager: false})
-    // lists: Lists[]
+  // Cards-Comments : 1:N 관계
+  @OneToMany(() => Comments, (comments) => comments.cards)
+  comments: Comments[];
 
-    // // Cards-Comments : 1:N 관계
-    // @OneToMany(type => Comments, comment => comment.cid, {eager: true})
-    // comments: Comments[]
+  // Card - User : N:1 관계
+  @ManyToOne(() => Users, (users) => users.cards)
+  @JoinColumn({ name: 'uid' })
+  users: Users[];
 }
