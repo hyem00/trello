@@ -60,7 +60,7 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 <h1 align="center">ERD</h1>
 <hr>
 <p align="center">
-<img width="766" alt="image" src="![image](https://github.com/hyem00/trello/assets/90279468/4f89cfe9-4589-4236-b2e6-90caebd06660)">
+<img width="766" alt="image" src="(https://github.com/hyem00/trello/assets/90279468/4f89cfe9-4589-4236-b2e6-90caebd06660)">
 </p>
 ### [erd](https://www.erdcloud.com/d/E8MqdrLaZYNnc2GDg)
 ### [깃북 링크](https://app.gitbook.com/o/v338KMStmlbbp8CqNpIp/s/v5F8fBk8my5tQcFqq6v7/~/changes/7/)
