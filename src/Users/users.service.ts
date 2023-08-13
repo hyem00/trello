@@ -56,8 +56,8 @@ export class UsersService {
       where: { email, deletedAt: null },
     });
     // 유효성 검사
-    if (!user || user.password !== password) {
-      throw new UnauthorizedException('이메일 또는 비밀번호가 일치하지 않습니다.');
+    if (user.email !== email) {
+      throw new UnauthorizedException('이메일이 일치하지 않습니다.');
     }
     if (user && (await bcrypt.compare(password, user.password))) {
       const payload = { email: user.email, uid: user.uid };
@@ -65,7 +65,7 @@ export class UsersService {
       console.log('accessToken', accessToken);
       return accessToken;
     } else {
-      throw new InternalServerErrorException('로그인에 실패하였습니다.');
+      throw new UnauthorizedException('로그인에 실패했습니다');
     }
   }
 
@@ -85,7 +85,7 @@ export class UsersService {
 
     // 조건문
     if (!password) {
-      throw new UnauthorizedException('본인 확인을 위해 기존 비밀번호를 입력해주세요.');
+      throw new UnauthorizedException('본인 확인을 위해 기존 비밀번호를 다시 한번 입력해주세요.');
     } else if (!newPassword || !newNickname) {
       throw new BadRequestException('미기입된 항목을 모두 입력해주세요. 새로운 비밀번호와, 새로운 닉네임은 기존 비밀번호 및 기존 닉네임과 동일해도 괜찮습니다.');
     }

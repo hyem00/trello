@@ -23,7 +23,7 @@ export class MembersController {
   @Delete('/member')
   async deleteMember(@Body() MemberData: createMemberDto, @Request() req) {
     const myUid = req.user.uid;
-    const result = await this.MembersService.deleteMember(MemberData, myUid);
-    return { message: '멤버 삭제에 성공하였습니다', data: result };
+    await this.MembersService.deleteMember(MemberData, myUid);
+    return { message: '멤버 삭제에 성공하였습니다' };
   }
 }

@@ -2,6 +2,7 @@ import { ManyToOne, JoinColumn, BaseEntity, UpdateDateColumn, CreateDateColumn, 
 import { Comments } from '../Comments/comments.entity';
 import { Lists } from '../Lists/lists.entity';
 import { Users } from 'src/Users/users.entity';
+import { CardManagers } from 'src/CardManager/card-manager.entity';
 
 @Entity()
 @Unique(['cid']) // cardId 고유값 지정
@@ -49,4 +50,8 @@ export class Cards extends BaseEntity {
   @ManyToOne(() => Users, (users) => users.cards)
   @JoinColumn({ name: 'uid' })
   users: Users[];
+
+  // Card - card 매니저 : 1:N 관계
+  @OneToMany(() => CardManagers, (cardManagers) => cardManagers.cards)
+  cardManagers: CardManagers[];
 }
