@@ -47,7 +47,7 @@ export class BoardsService {
     if (!isExistBoard) {
       throw new NotFoundException('이미 삭제되었거나 존재하지 않는 보드입니다.');
     }
-    if (isExistBoard){
+    if (isExistBoard) {
       this.boardRepository.delete(bid);
       return { message: '보드가 삭제되었습니다.' };
     }
