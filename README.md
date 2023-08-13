@@ -68,6 +68,45 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 - Website - [https://nestjs.com](https://nestjs.com/)
 - Twitter - [@nestframework](https://twitter.com/nestframework)
 
-## License
+# Trello
 
-Nest is [MIT licensed](LICENSE).
+<p align="center">
+<a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
+</p>
+[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
+[circleci-url]: https://circleci.com/gh/nestjs/nest
+<hr>
+<h1 align="center">ERD</h1>
+<hr>
+<p align="center">
+<img width="766" alt="image" src="https://github.com/rammakasty/trello-readme/assets/25074165/4fce0439-4a22-4308-b3e9-42729282b08c">
+</p>
+### [erd](https://www.erdcloud.com/d/E8MqdrLaZYNnc2GDg)
+### [깃북 링크](https://app.gitbook.com/o/v338KMStmlbbp8CqNpIp/s/v5F8fBk8my5tQcFqq6v7/~/changes/7/)
+목차
+## 프로젝트 소개
+<p align="justify">
+대표적인 협업툴인 Trello를 node.js와 nest.js 를 사용하여 api 프로그램을 구현하였습니다.
+</p>
+## 설치 방법
+```sh
+$ npm i -g @nestjs/cli
+$ nest new project-name
+```
+<br>
+## 주요 기능
+### 기능 1   로그인, 회원가입, 사용자 인증
+### 기능 2   보드, 리스트, 카드 CRUD
+### 기능 3   보드 멤버 추가, 카드 댓글 달기
+### 기능 4   카드 할당자 추가, 컬럼 이동 기능
+<br>
+<p align="justify">
+</p>
+<br>
+## 라이센스
+MIT &copy; [NoHack](mailto:lbjp114@gmail.com)
+<!-- Stack Icon Refernces -->
+[js]: /images/stack/javascript.svg
+[ts]: /images/stack/typescript.svg
+[react]: /images/stack/react.svg
+[node]: /images/stack/node.svg

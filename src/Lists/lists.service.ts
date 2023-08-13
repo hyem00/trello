@@ -138,7 +138,7 @@ export class ListsService {
       } else if (list.order === max) {
         lists
           .filter((list) => {
-            return list.order <= max && list.order > min;
+            return list.order <= max && list.order >= min;
           })
           .forEach(async (list) => {
             list.order = list.order + 1;
