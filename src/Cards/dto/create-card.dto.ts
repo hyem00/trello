@@ -8,7 +8,7 @@ export class CreateCardDto {
   color: string;
 
   @IsString()
-  manager: string;
+  manager: string | null;
 
   @IsString()
   explanation: string;

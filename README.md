@@ -35,39 +35,56 @@ $ npm install
 ## Running the app
 
 ```bash
-# development
-$ npm run start
-
 # watch mode
 $ npm run start:dev
+```
+[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
+[circleci-url]: https://circleci.com/gh/nestjs/nest
+<hr>
+<h1 align="center">ERD</h1>
+<hr>
+<p align="center">
+<img width="766" alt="image" src="https://github.com/hyem00/trello/assets/90279468/4f89cfe9-4589-4236-b2e6-90caebd06660">
 
-# production mode
-$ npm run start:prod
+</p>
+
+### ERD 링크 : [erd](https://www.erdcloud.com/d/E8MqdrLaZYNnc2GDg)
+### API 깃북 링크 : [API 깃북 링크](https://app.gitbook.com/o/v338KMStmlbbp8CqNpIp/s/v5F8fBk8my5tQcFqq6v7/~/changes/7/)
+
+목차
+## 프로젝트 소개
+
+<p align="justify">
+대표적인 협업툴인 Trello를 node.js와 nest.js 를 사용하여 api 프로그램을 구현하였습니다.
+</p>
+
+## 설치 방법
+
+```sh
+$ npm i -g @nestjs/cli
+$ nest new project-name
 ```
 
-## Test
+<br>
 
-```bash
-# unit tests
-$ npm run test
+## 주요 기능
+### 기능 1   로그인, 회원가입, 사용자 인증
+### 기능 2   보드, 리스트, 카드 CRUD
+### 기능 3   보드 멤버 추가, 카드 댓글 달기
+### 기능 4   카드 할당자 추가, 컬럼 이동 기능
 
-# e2e tests
-$ npm run test:e2e
+<br>
 
-# test coverage
-$ npm run test:cov
-```
+<p align="justify">
+</p>
 
-## Support
+<br>
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+## 라이센스
 
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+MIT &copy; [NoHack](mailto:lbjp114@gmail.com)
+<!-- Stack Icon Refernces -->
+[js]: /images/stack/javascript.svg
+[ts]: /images/stack/typescript.svg
+[react]: /images/stack/react.svg
+[node]: /images/stack/node.svg
