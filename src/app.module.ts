@@ -41,7 +41,18 @@ import { CardManagerModule } from './CardManager/card-manager.module';
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(AuthMiddleware).forRoutes({ path: 'api/member', method: RequestMethod.ALL }, { path: 'api/board', method: RequestMethod.ALL }, { path: 'api/cmanager', method: RequestMethod.ALL });
+    consumer.apply(AuthMiddleware)
+    .forRoutes(
+    { path: 'api/member', method: RequestMethod.ALL }, 
+    { path: 'api/board', method: RequestMethod.ALL }, 
+    { path: 'api/cmanager', method: RequestMethod.ALL },
+    { path: 'api/user', method: RequestMethod.ALL },
+    { path: 'api/signup', method: RequestMethod.ALL },
+    { path: 'api/login', method: RequestMethod.ALL },
+    { path: 'api/card', method: RequestMethod.ALL }
+    );
+    
+
   }
 }
 console.log(typeORMConfig, '앱에서 확인');
