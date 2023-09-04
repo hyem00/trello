@@ -21,10 +21,13 @@ export class UsersService {
   async signup(signupData: AuthCredentialsDto): Promise<Users> {
     const { email, nickname, password, confirmPassword } = signupData;
     const existUser = await this.getUserByEmail(email);
+    const existNickname = await this.getUserByNickname(nickname);
 
     // 유효성 검사
     if (existUser) {
       throw new ConflictException(`동일한 이메일의 회원이 이미 존재합니다. email: ${email}`);
+    } else if (existNickname) {
+      throw new ConflictException(`동일한 닉네임의 회원이 이미 존재합니다. nickname: ${nickname}`)
     }
 
     // 조건문
@@ -44,6 +47,12 @@ export class UsersService {
   async getUserByEmail(email: string): Promise<Users | undefined> {
     return this.usersRepository.findOne({ where: { email, deletedAt: null } });
   }
+
+  // 닉네임 중복검사
+  async getUserByNickname(nickname: string): Promise<Users | undefined> {
+    return this.usersRepository.findOne({ where: { nickname, deletedAt: null } });
+  }
+
   // hash저장된 비밀번호를 입력한 비밀번호와 비교
   async comparePasswords(inputPassword: string, storedPassword: string): Promise<boolean> {
     return bcrypt.compare(inputPassword, storedPassword);
@@ -83,6 +92,9 @@ export class UsersService {
     const { password, newPassword, newNickname } = updateDto;
     const user = await this.usersRepository.findOne({ where: { uid, deletedAt: null } });
 
+    const saltRounds = 10;
+    const newHashedPassword = await bcrypt.hash(newPassword, saltRounds);
+
     // 조건문
     if (!password) {
       throw new UnauthorizedException('본인 확인을 위해 기존 비밀번호를 다시 한번 입력해주세요.');
@@ -98,7 +110,8 @@ export class UsersService {
     console.log('P:', await bcrypt.compare(password, user.password));
 
     if (user && (await bcrypt.compare(password, user.password))) {
-      user.password = newPassword;
+      
+      user.password = newHashedPassword;
       user.nickname = newNickname;
 
       const updateUser = this.usersRepository.save(user);

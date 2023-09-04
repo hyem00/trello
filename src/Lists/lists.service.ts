@@ -103,6 +103,7 @@ export class ListsService {
       throw new NotFoundException(`해당 리스트가 조회되지 않습니다. listId: ${lid}`);
     }
   }
+  
   // 5. 리스트 순서변경
   async changeLists(bid: number, lid: number, newPosition: number): Promise<void> {
     const board = await this.boardRepository.findOne({ where: { bid } });
